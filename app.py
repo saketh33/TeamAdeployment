@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thursday August 5 2021
-@author: Sanshya Kapoor
+Created on Fri July 20 12:50:04 2021
+@author: sai pavan saketh
 """
 
 
@@ -11,7 +11,6 @@ import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 import keras
 import datetime
-from datetime import timedelta
 
 model = keras.models.load_model("LSTM.h5")
 
@@ -26,7 +25,7 @@ def main():
 	st.title("Starbucks Stock Price Prediction")
 	html_temp = """
 	<div style="background-color:rgb(0, 238, 255);padding:10px">
-	<h2 style="color:rgb(255, 124, 37);text-shadow: 0 4px 10px rgba(0, 0, 0, 0.603);text-align:center;">Starbucks Predicted CLosed Price</h2>
+	<h2 style="color:rgb(255, 124, 37);text-shadow: 0 4px 10px rgba(0, 0, 0, 0.603);text-align:center;">Apple Inc. Predicted CLosed Price</h2>
 	</div>
 	"""
 
@@ -38,10 +37,7 @@ def main():
 	# Getting the start day and next day from the dataset
 	start_day = stock_data.index[0]
 	last_day = stock_data.index[-1]
-	#next_day = last_day + datetime.timedelta(days = 1)
-	initial_date = last_day
-	next_day = pd.to_datetime(initial_date) + pd.DateOffset(days=1)
-	
+	next_day = last_day + datetime.timedelta(days = 1)
 
 	# Taking date input
 	input_date = st.date_input("Enter a Date: ", next_day)
@@ -63,7 +59,7 @@ def main():
 
 		i = dates_list.index(str(input_date - datetime.timedelta(days = j)))
 
-		X = stock_data.filter(['Close'])
+		X = stock_data.filter(['Close/Last'])
 		# Get the last 20 day closing price values and convert the dataframe to an array
 		last_20_days = X[i-20: i].values
 		# Scale the data to be values between 0 and 1
@@ -72,7 +68,8 @@ def main():
 		X_test = []
 		# Append the past 20 days
 		X_test.append(last_20_days_scaled)
-		# Convert the X_test data set to a numpy array
+		# Convert the X_test data set to a 
+  #  array
 		X_test = np.array(X_test)
 		# Reshape the data
 		X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
@@ -90,13 +87,13 @@ def main():
 
 		# Percentage increase or decrease in Closed Price
 		previous = pred_price
-		previous_pred_price = X.at[str(input_date - datetime.timedelta(days = j)), 'Close']
+		previous_pred_price = X.at[str(input_date - datetime.timedelta(days = j)), 'Close/Last']
 
 		diff=(float)(pred_price - previous_pred_price)
 		if(diff < 0):
-			st.write("percentage decrease = ",np.round(((- (diff)/previous_pred_price)*100),2))
+			st.write("percentage decrease = ",round(((- (diff)/previous_pred_price)*100),2))
 		else:
-			st.write("percentage increase = ",np.round((( (diff)/previous_pred_price)*100),2))
+			st.write("percentage increase = ",round((( (diff)/previous_pred_price)*100),2))
 
 	else:
 		st.error('Error: Either the date is above the last date of the dataset OR below the start date + 20 days of the dataset. Please enter a date between or equal to {} and {} !!'.format(start_day + datetime.timedelta(days = 20), next_day))
