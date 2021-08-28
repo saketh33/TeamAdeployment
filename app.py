@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri July 27 12:00 am 2021
-@author: sai oavan saketh
+@author: sai pavan saketh
 """
 
 
@@ -22,10 +22,10 @@ def predict_price(final_features):
 	return pred_price
 
 def main():
-	st.title("Apple Inc. Stock Price Prediction")
+	st.title("Stock Price Prediction")
 	html_temp = """
 	<div style="background-color:rgb(0, 238, 255);padding:10px">
-	<h2 style="color:rgb(255, 124, 37);text-shadow: 0 4px 10px rgba(0, 0, 0, 0.603);text-align:center;">Apple Inc. Predicted CLosed Price</h2>
+	<h2 style="color:rgb(255, 124, 37);text-shadow: 0 4px 10px rgba(0, 0, 0, 0.603);text-align:center;">Starbucks Predicted CLosed Price</h2>
 	</div>
 	"""
 
